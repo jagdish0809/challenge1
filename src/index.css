@@ -1,13 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@200;300;400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Chakra Petch", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+Input::placeholder {
+  color: #9cdcd7;
+  font-weight: 450;
+  opacity: 1;
+}
+
+Input::-ms-input-placeholder {
+  color: #9cdcd7;
+  font-weight: 450;
+}
+
+.logo {
+  font-family: "IBM Plex Serif", serif;
+}
+
+.timeline,
+.timelinecard {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.timeline::-webkit-scrollbar,
+.timelinecard::-webkit-scrollbar {
+  display: none;
+}
+
+.artistcol::-webkit-scrollbar {
+  width: 8px;
+}
+
+.artistcol::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #cfcfcf;
 }
