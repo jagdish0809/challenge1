@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { app } from "../firebase";
-
-const auth = getAuth(app);
+import { useFirebase } from "../context/Firebase";
 
 const Signup = () => {
   const [userData, setUserData] = useState({
@@ -12,6 +9,7 @@ const Signup = () => {
     password: "",
   });
   const navigation = useNavigate();
+  const firebase = useFirebase();
 
   const inputchangehandler = (input, value) => {
     setUserData({ ...userData, [input]: value });
@@ -19,21 +17,30 @@ const Signup = () => {
 
   const formsubmithandler = (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(
-      auth,
-      userData.email,
-      userData.password
-    ).then((value) => {
-      alert("Success");
-      navigation("/home")
-      setUserData({
-        name: "",
-        email: "",
-        password: "",
-      });
-    }).catch((err)=>{
-      err.message === "EMAIL_EXISTS" ? alert("Email is already in use.") : alert("Something went wrong!")
-    })
+
+    //creating the user
+    firebase
+      .signupUserWithEmailAndPassword(userData.email, userData.password)
+      .then((value) => {
+        alert("Successfully Signed Up!");
+        navigation("/home");
+      })
+      .catch((err) =>
+        err.code === "auth/email-already-in-use"
+          ? alert("Email already is in use.")
+          : alert("Something went wrong!")
+      );
+
+    //storing the user data
+    const { email, password } = userData;
+    firebase.putData(`users/${userData.name}`, { email, password });
+  };
+
+  const loginwithgoogle = () => {
+    firebase
+      .signupWithGoogle()
+      .then((value) => navigation("/home"))
+      .catch((err) => console.log(err.code));
   };
 
   return (
@@ -93,6 +100,22 @@ const Signup = () => {
             SUBMIT
           </button>
         </form>
+        <div className="flex w-full justify-between items-center my-2 space-x-[15px]">
+          <span className="bg-[#9CDCD7] h-[1px] w-full"></span>
+          <p className="text-[#9CDCD7] font-bold text-lg">or</p>
+          <span className="bg-[#9CDCD7] h-[1px] w-full"></span>
+        </div>
+        <div className="flex w-full justify-between flex-col items-center space-y-3">
+          <button
+            className="w-[95%] h-[50px] bg-[#FEFFFE] rounded-lg text-2xl font-bold text-[#5E918D]"
+            onClick={loginwithgoogle}
+          >
+            <span className="font-normal">Continue with </span>Google
+          </button>
+          {/* <button className="w-[95%] h-[50px] bg-[#FEFFFE] rounded-lg text-2xl font-bold text-[#5E918D]">
+            <span className="font-normal">Continue with </span>Apple
+          </button> */}
+        </div>
         <p className="text-center my-3 text-[#9CDCD7] text-lg">
           Already have an account?{" "}
           <span

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import img1 from "../assests/pexels-ekaterina-12203460.png";
 import img2 from "../assests/pexels-genaro-servín-763210.png";
 import img3 from "../assests/pexels-pixabay-164455.png";
@@ -145,30 +145,27 @@ const Rightside = () => {
         <div className="h-[96%] overflow-y-auto artistcol">
           <div className="flex flex-col space-y-[30px] mr-2">
             {cards.map((card, index) => (
-              <>
-                <div className="h-[126px] overflow-hidden w-full rounded-lg relative" key={index}>
-                  <img
-                    src={card.img}
-                    alt="artist img"
-                    className="object-cover"
-                  />
-                  <img
-                    src={overlay}
-                    alt="overlay img"
-                    className="absolute bottom-0"
-                  />
-                  <img
-                    src={card.userimg}
-                    alt="user img"
-                    className="absolute bottom-[15px] left-[15px]"
-                  />
-                  <span className="absolute bottom-[54px] left-[54px] h-[12px] w-[12px] rounded-full border-2 border-white bg-[#0EC297]"></span>
-                  <div className="text-white absolute bottom-[15px] h-[50px] flex flex-col justify-evenly left-[80px]">
-                    <h1 className="font-semibold">{card.name}</h1>
-                    <p className="text-xs">@thewildwithyou</p>
-                  </div>
+              <div
+                className="h-[126px] overflow-hidden w-full rounded-lg relative"
+                key={index}
+              >
+                <img src={card.img} alt="artist img" className="object-cover" />
+                <img
+                  src={overlay}
+                  alt="overlay img"
+                  className="absolute bottom-0"
+                />
+                <img
+                  src={card.userimg}
+                  alt="user img"
+                  className="absolute bottom-[15px] left-[15px]"
+                />
+                <span className="absolute bottom-[54px] left-[54px] h-[12px] w-[12px] rounded-full border-2 border-white bg-[#0EC297]"></span>
+                <div className="text-white absolute bottom-[15px] h-[50px] flex flex-col justify-evenly left-[80px]">
+                  <h1 className="font-semibold">{card.name}</h1>
+                  <p className="text-xs">@thewildwithyou</p>
                 </div>
-              </>
+              </div>
             ))}
           </div>
         </div>
@@ -180,6 +177,6 @@ const Rightside = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Rightside
+export default Rightside;

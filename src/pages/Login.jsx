@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../firebase";
-
-const auth = getAuth(app);
+import { useFirebase } from "../context/Firebase";
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -11,6 +8,7 @@ const Login = () => {
     password: "",
   });
   const navigation = useNavigate();
+  const firebase = useFirebase();
 
   const inputchangehandler = (input, value) => {
     setUserData({ ...userData, [input]: value });
@@ -18,19 +16,25 @@ const Login = () => {
 
   const formsubmithandler = (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, userData.email, userData.password)
+    firebase
+      .loginUserWithEmailAndPassword(userData.email, userData.password)
       .then((value) => {
-        alert("Logged In Successfully!");
-        navigation('/home')
+        alert("Successfully Logged In!");
+        navigation("/home");
       })
       .catch((err) => {
-        console.log(err);
-        if(err.message==="INVALID_LOGIN_CREDENTIALS"){
-            alert("Invalid login credentials.")
-        } else {
-            alert("Something went wrong!")
-        }
+        err.code === "auth/invalid-login-credentials"
+          ? alert("Invalid login credentials!")
+          : alert("Something went wrong!");
       });
+  };
+
+  
+  const loginwithgoogle = () => {
+    firebase
+      .signupWithGoogle()
+      .then((value) => navigation("/home"))
+      .catch((err) => console.log(err.code));
   };
   return (
     <div className="h-screen w-screen bg-[#5E918D] flex justify-center items-center">
@@ -76,6 +80,22 @@ const Login = () => {
             SUBMIT
           </button>
         </form>
+        <div className="flex w-full justify-between items-center my-2 space-x-[15px]">
+          <span className="bg-[#9CDCD7] h-[1px] w-full"></span>
+          <p className="text-[#9CDCD7] font-bold text-lg">or</p>
+          <span className="bg-[#9CDCD7] h-[1px] w-full"></span>
+        </div>
+        <div className="flex w-full justify-between flex-col items-center space-y-3">
+          <button
+            className="w-[95%] h-[50px] bg-[#FEFFFE] rounded-lg text-2xl font-bold text-[#5E918D]"
+            onClick={loginwithgoogle}
+          >
+            <span className="font-normal">Continue with </span>Google
+          </button>
+          {/* <button className="w-[95%] h-[50px] bg-[#FEFFFE] rounded-lg text-2xl font-bold text-[#5E918D]">
+            <span className="font-normal">Continue with </span>Apple
+          </button> */}
+        </div>
         <p className="text-center my-3 text-[#9CDCD7] text-lg">
           No account yet?{" "}
           <span
